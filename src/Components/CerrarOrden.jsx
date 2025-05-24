@@ -1,6 +1,8 @@
 import Navbar from "./Navbar";
-import getOrdenDeInspeccion from "../Services/serviceOrdenDeInspeccion";
+import service from "../Services/serviceOrdenDeInspeccion";
 import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { Box, Mail, Mails } from "lucide";
 
 export default function CerrarOrden() {
   const [ordenes, setOrdenes] = useState([]);
@@ -8,12 +10,18 @@ export default function CerrarOrden() {
   const [selectedOrden, setSelectedOrden] = useState(null);
   const [selectedMotivo, setSelectedMotivo] = useState(null);
   const [observaciones, setObservaciones] = useState("");
+  const [formData, setFormData] = useState({
+    numero: "",
+    observacionOrden: "",
+    motivo: "",
+    observacionMotivo: "",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const ordenesData = await getOrdenDeInspeccion.getOrdenDeInspeccion();
-        const motivosData = await getOrdenDeInspeccion.getMotivosDeInspeccion();
+        const ordenesData = await service.getOrdenesDeInspeccion();
+        const motivosData = await service.getMotivosDeInspeccion();
         setOrdenes(ordenesData);
         setMotivos(motivosData);
       } catch (error) {
@@ -38,6 +46,42 @@ export default function CerrarOrden() {
     console.log("Orden seleccionada:", selectedOrden);
     console.log("Motivo seleccionado:", selectedMotivo);
     console.log("Observaciones:", observaciones);
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible ? "animate-enter" : "animate-leave"
+        } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+      >
+        <div className="flex-1 w-0 p-4">
+          <div className="flex items-start">
+            <div className="flex-shrink-0 pt-0.5">
+              <img
+                className="h-10 w-10 rounded-full"
+                src=".\src\assets\ingeUsuario.jpg"
+                alt=""
+              />
+            </div>
+            <div className="ml-3 flex-1">
+              <p className="text-sm font-medium text-gray-900">
+                
+                Tienes un mail nuevo!
+              </p>
+              <p className="mt-1 text-sm text-gray-500">
+                La operacion fue hecha con exito
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="flex border-l border-gray-200">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    ));
   };
 
   return (
@@ -58,22 +102,23 @@ export default function CerrarOrden() {
             <div className="space-y-2">
               <div className="flex items-center rounded-md border border-gray-200 p-3 hover:bg-gray-50">
                 {ordenes &&
-                  ordenes.map(orden => (
-                    <div key={orden.id} className="flex items-center">
+                  ordenes.map((orden) => (
+                    <div key={orden.numero} className="flex items-center">
                       <input
                         type="radio"
                         name="orden-inspeccion"
                         className="radio radio-primary mr-3"
                         id={`orden-${orden.numero}`}
-                        value={orden.id}
+                        value={orden.numero}
                         onChange={handleOrdenChange}
-                        checked={selectedOrden === String(orden.id)} 
+                        checked={selectedOrden === String(orden.numero)}
                       />
                       <label
-                        htmlFor={`orden-${orden.id}`}
+                        htmlFor={`orden-${orden.numero}`}
                         className="cursor-pointer text-gray-700"
                       >
-                        {orden.descripcion}
+                        {orden.numero} - {orden.fechaFin}
+                        {orden.nombreEstacion}
                       </label>
                     </div>
                   ))}
@@ -99,8 +144,9 @@ export default function CerrarOrden() {
 
           <div>
             <span className="label-text text-lg font-semibold text-gray-600">
-              Motivos de Inspección
+              Motivos fuera servicio Sismografo
             </span>
+           
           </div>
 
           <div className="mb-6">
@@ -116,7 +162,7 @@ export default function CerrarOrden() {
                         id={`motivo-${motivo.id}`}
                         value={motivo.id}
                         onChange={handleMotivoChange}
-                        checked={selectedMotivo === String(motivo.id)} 
+                        checked={selectedMotivo === String(motivo.id)}
                       />
                       <label
                         htmlFor={`motivo-${motivo.id}`}
@@ -124,7 +170,11 @@ export default function CerrarOrden() {
                       >
                         {motivo.descripcion}
                       </label>
-                      <textarea name="" id="" placeholder="Obersevacion"></textarea>
+                      <textarea
+                        name=""
+                        id=""
+                        placeholder="Obersevacion"
+                      ></textarea>
                     </div>
                   ))}
                 </div>
@@ -140,8 +190,9 @@ export default function CerrarOrden() {
             className="btn btn-success btn-block text-lg"
             onClick={handleSubmit}
           >
-            Confirmar Cierre
+            Confirmar cierre de orden de inspeccion
           </button>
+          <Toaster position="bottom-right" reverseOrder={false} />
         </div>
       </div>
     </>

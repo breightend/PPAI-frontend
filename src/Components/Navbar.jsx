@@ -16,7 +16,7 @@ export default function Navbar() {
           <div className="avatar">
             <div className="w-14 h-14 rounded-full ring ring-accent ring-offset-base-100 ring-offset-2">
               <img
-                src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp"
+                src=".\src\assets\ingeUsuario.jpg"
                 alt="User Avatar"
               />
             </div>
