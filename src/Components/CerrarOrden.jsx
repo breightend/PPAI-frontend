@@ -2,7 +2,7 @@ import Navbar from "./Navbar";
 import service from "../Services/serviceOrdenDeInspeccion";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { Box, Mail, Mails } from "lucide";
+
 
 export default function CerrarOrden() {
   const [ordenes, setOrdenes] = useState([]);
@@ -31,6 +31,7 @@ export default function CerrarOrden() {
 
     fetchData();
   }, []);
+
   const handleOrdenChange = (event) => {
     setSelectedOrden(event.target.value);
   };
@@ -106,7 +107,7 @@ export default function CerrarOrden() {
                     <div key={orden.numero} className="flex items-center">
                       <input
                         type="radio"
-                        name="orden-inspeccion"
+                        name="numero"
                         className="radio radio-primary mr-3"
                         id={`orden-${orden.numero}`}
                         value={orden.numero}
@@ -117,8 +118,7 @@ export default function CerrarOrden() {
                         htmlFor={`orden-${orden.numero}`}
                         className="cursor-pointer text-gray-700"
                       >
-                        {orden.numero} - {orden.fechaFin}
-                        {orden.nombreEstacion}
+                        {orden.numero} - {orden.fechaFin} - {orden.nombreEstacion}
                       </label>
                     </div>
                   ))}

@@ -3,7 +3,7 @@ import axios from "axios";
 const getOrdenesDeInspeccion = async () => {
   try {
     const response = await axios.get(
-      "http://localhost:5200/ordenes-inspeccion"
+      "https://localhost:7200/ordenes-inspeccion"
     );
     return response.data;
   } catch (error) {
@@ -14,7 +14,7 @@ const getOrdenesDeInspeccion = async () => {
 
 const getMotivosDeInspeccion = async () => {
   try {
-    const response = await axios.get("/motivosInspeccion");
+    const response = await axios.get("https://localhost:5200/motivos");
     return response.data;
   } catch (error) {
     console.error("Error fetching motivos de inspeccion:", error);
@@ -22,9 +22,9 @@ const getMotivosDeInspeccion = async () => {
   }
 };
 
-const getSesion = async () => {
+const getUsuarioLogueado = async () => {
   try {
-    const response = await axios.get("http://localhost:5200/ordenes-inspeccion");
+    const response = await axios.get("https://localhost:5200/empleado-logueado");
     return response.data;
   } catch (error) {
     console.error("Error fetching sesion:", error);
@@ -42,4 +42,4 @@ const postMotivosDeInspeccion = async (motivo) => {
   }
 };
 
-export default { getOrdenesDeInspeccion, getMotivosDeInspeccion, getSesion,postMotivosDeInspeccion };
+export default { getOrdenesDeInspeccion, getMotivosDeInspeccion, postMotivosDeInspeccion, getUsuarioLogueado };
